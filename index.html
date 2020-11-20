@@ -72,6 +72,12 @@
             font-size: 1.3em;
             color: #2878BB;
         }
+        .titulo h1 em {
+            font-size: 11px;
+            opacity: 0.5;
+            position: relative;
+            top: -6px;
+        }
         .partes {
             width: 80%;
             margin: 0 auto;
@@ -227,6 +233,7 @@
                                     Cronos.Nucleo.ConfigurarControles();
                                     Cronos.Nucleo.PrevineSaidaDaTela();
                                     Cronos.Nucleo.IniciarCronometro();
+                                    Cronos.Nucleo.EstamparVersao();
                                     setTimeout(function() {
                                         Cronos.Nucleo.Carregando(false);
                                     }, Cronos.Definicoes.DelayAnimation / 10);
@@ -606,6 +613,17 @@
             
             this.Nucleo = { 
                 Cronos: this,
+
+                EstamparVersao: async function() {
+                    var execucaoLocal = location.href.indexOf('file://') === 0;
+                    var versao = "v0.0.0";
+                    if (!execucaoLocal) {
+                        var response = await fetch("VERSION");
+                        var text = await response.text();
+                        versao = text.trim().replace("#BUILD#", "x");
+                    }
+                    $('.titulo h1 em').text(versao);
+                },
 
                 CarregarParametrosIniciais: function() {
                     Cronos.Definicoes = $.extend(Cronos.Definicoes, params, { ParametrosInicializados: true });
@@ -1149,7 +1167,7 @@
 <body>
     <div class="conteudo center">
         <div class="titulo">
-            <h1><i class="fa fa-clock-o" aria-hidden="true"></i> Cronos</h1>
+            <h1><i class="fa fa-clock-o" aria-hidden="true"></i> Cronos <em></em></h1>
             <h2>Controle de tempo nas reuni&otilde;es</h2>
         </div>
 
