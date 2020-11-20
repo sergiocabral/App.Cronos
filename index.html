@@ -1,0 +1,1216 @@
+<html>
+<head>
+    <title>Cronos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Controle do tempo das partes nas reuni&otilde;es" />
+    <meta name="keywords" content="JW,cronometro,tempo,reunioes,testemunhas de jeova" />
+    <meta name="author" content="sergio@cabral.br.com" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Cronos" />
+    <meta property="og:description" content="Controle do tempo das partes nas reuni&otilde;es" />
+    <meta property="og:title" content="Controle do tempo das partes nas reuni&otilde;es" />
+    <meta property="og:url" content="http://cronos.cabral.br.com/" />
+    <meta property="og:image" content="http://cronos.cabral.br.com/img/favicon.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+    <style type="text/css">
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Roboto, "Segoe UI", Helvetica, Arial, "Noto Sans", "Arial Unicode", "Arial Unicode MS", sans-serif;
+            cursor: default;
+        }
+        input[type='text'] {
+            cursor: auto;
+        }
+        button, button * {
+            cursor: pointer;
+        }
+        ::placeholder {
+            color: silver;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+        .left { text-align: left; }
+        .center { text-align: center; }
+        .right { text-align: right; }
+        .blue { color: blue !important; }
+        .red { color: red !important; }
+        .bg-blue { background-color: dodgerblue !important; }
+        .bg-green { background-color: lightgreen !important; }
+        .bg-red { background-color: lightcoral !important; }
+        body:not(.carregado) {
+            background-image: url(img/carregando.gif);
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        body:not(.carregado) > * {
+            display: none !important;
+        }
+        li.ui-menu-item {
+            line-height: 3em;
+        }
+        .ui-menu.ui-widget-content {
+            background-color: #f9f9f9;
+        }
+        .jconfirm {
+            padding: 10%;
+        }
+        .titulo {
+            background: linear-gradient(#F2F1EF, #FFFFFF);
+        }
+        .titulo h1 {
+            text-transform: uppercase;
+            margin: 0;
+            color: #4477A1;
+        }
+        .titulo h2 {
+            margin: 0 0 1em 0;
+            font-size: 1.3em;
+            color: #2878BB;
+        }
+        .partes {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .partes .parte {
+            margin-top: 1em;
+        }
+        .partes .parte table {
+            width: 100%;
+        }
+        .partes .parte > table {
+            background-color: lightgray;
+            border-radius: 0.5em;
+            padding: 1em;
+        }
+        .partes .parte .nome {
+            width: 100%;
+        }
+        .partes .parte .nome input {
+            background-color: #2878BB;
+            color: #ffffff;
+            padding: 0.5em;
+            width: 100%;
+            font-size: 1em;
+            border: none;
+            height: 40px;
+        }
+        .partes .parte .manipulacao {
+            white-space: nowrap;
+            padding-left: 7px;
+        }
+        .partes .parte .manipulacao button {
+            margin: 0 1px 0 0;
+            padding: 0.6em 1em;
+            font-weight: bold;
+            position: relative;
+            left: -3px;
+            height: 40px;
+        }
+        .partes .parte table table {
+            margin: 4px 0 0 0;
+        }
+        .partes .parte .tempo .label {
+            margin: 6px 0 6px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .pessoa input {
+            background-color: gray;
+            color: #ffffff;
+            padding: 0.5em;
+            width: 100%;
+            border: none;
+            line-height: 0.8em;
+        }
+        .adicionarParte {
+            margin: 1em;
+            background-color: lightgreen !important;
+        }
+        .partes .parte .tempos {
+            min-width: 170px;
+        }
+        .partes .parte .tempos label {
+            display: block;
+        }
+        .partes .parte .tempos label span:not(.val) {
+            display: inline-block;
+            width: 55px;
+            position: relative;
+            top: -4px;
+        }
+        .partes .parte .tempos label span:not(.val):after {
+            content: ':';
+        }
+        .partes .parte .tempos label span.val {
+            display: inline-block;
+            width: 110px;
+            font-weight: bold;
+            color: black;
+            text-align: right;
+            font-size: 1.7em;
+        }
+        .partes .parte .controles button {
+            padding: 0.5em 1em;
+            margin: 0 1px 5px 0;
+            height: 40px;
+        }
+        .relatorio { 
+            background-color: lightgray;
+            margin: 1em 10%;
+            border-radius: 0.5em;
+            padding: 0.5em;
+            position: relative;
+        }
+        .relatorio h1 {
+                margin: 0;
+                cursor: pointer;
+                text-transform: uppercase;
+                color: #65605E;
+                font-size: 1.5em;
+                height: 32px;
+                padding-top: 2px;
+        }
+        .relatorio .copiar {
+            position: absolute;
+            top: 0.5em;
+            right: 0.5em;
+            margin-right: -1px;
+            height: 32px;
+        }
+        .relatorio textarea {
+            width: 100%;
+            height: 300px;
+            margin: 0.2em 0 0 0;
+            font-weight: bold;
+            background: #F2F1EF;
+            color: #4477A1;
+            display: none;
+        }
+        .ajuste.tempos {
+            text-align: right;
+            margin-bottom: 3px;
+        }
+        .ajuste.tempos label {
+            display: block;
+            margin: 0 auto;
+            width: 200px;
+        }
+        .ajuste.tempos label input {
+            width: 115px;
+            font-size: 1.5em;
+            text-align: right;
+            font-weight: bold;
+            margin-bottom: 4px;
+            position: relative;
+            top: 3px;
+            padding-right: 0.3em;
+        }
+    </style>
+    <script type="text/javascript">
+        window.Cronos = (function(params) {
+            if (window.Cronos) return window.Cronos;
+            
+            this.Cronos = this;
+
+            this.Inicializar = function() {
+                Cronos.Carregar.JQuery(function() {
+                    Cronos.Carregar.JQueryUI(function() {
+                        Cronos.Carregar.JQueryConfirmPlugin(function() {
+                            Cronos.Carregar.JQueryToastPlugin(function() {
+                                Cronos.Carregar.FontAwesome(function() {
+                                    Cronos.Nucleo.CarregarParametrosIniciais();
+                                    Cronos.Nucleo.ConfigurarControles();
+                                    Cronos.Nucleo.PrevineSaidaDaTela();
+                                    Cronos.Nucleo.IniciarCronometro();
+                                    setTimeout(function() {
+                                        Cronos.Nucleo.Carregando(false);
+                                    }, Cronos.Definicoes.DelayAnimation / 10);
+                                });
+                            });
+                        });
+                    });
+                });
+            }
+
+            this.Definicoes = { 
+                Cronos: this,
+
+                InicializacaoAutomatica: true,
+
+                ModoDebug: false,
+
+                DelayAnimation: 2000,
+
+                TempoMaximo: 106,
+
+                ToleranciaDeAtrasoEmSegundos: 0,
+
+                Unico: 0,
+            };
+
+            this.Objetos = {
+                Cronos: this
+            };
+
+            this.Cronometros = {
+                Class: {
+                    Pause: false,
+                    Id: null,
+                    Tempo: null,
+                    Inicio: null,
+                },
+                Lista: {}
+            };
+
+            this.Partes = {
+                Nenhum: [],
+                MeioDeSemana: [
+                    { tempo:105, nome: 'Tempo total da reuni&atilde;o'},
+                    { tempo:  3, nome: 'Introdu&ccedil;&atilde;o do presidente'},
+                    { tempo: 10, nome: 'Tesouros da Palavra de Deus'},
+                    { tempo:  8, nome: 'Encontre joias espirituais'},
+                    { tempo:  4, nome: 'Leitura da B&iacute;blia'},
+                    { tempo:  1, nome: 'Conselho: Leitura da B&iacute;blia'},
+                    { tempo:  5, nome: 'Demonstra&ccedil;&atilde;o 1'},
+                    { tempo:  1, nome: 'Conselho: Demonstra&ccedil;&atilde;o 1'},
+                    { tempo:  5, nome: 'Demonstra&ccedil;&atilde;o 2'},
+                    { tempo:  1, nome: 'Conselho: Demonstra&ccedil;&atilde;o 2'},
+                    { tempo:  5, nome: 'Demonstra&ccedil;&atilde;o 3'},
+                    { tempo:  1, nome: 'Conselho: Demonstra&ccedil;&atilde;o 3'},
+                    { tempo:  5, nome: 'Vida Crist&atilde;: Parte 1'},
+                    { tempo: 10, nome: 'Vida Crist&atilde;: Parte 2'},
+                    { tempo: 30, nome: 'Estudo b&iacute;blico'},
+                    { tempo:  3, nome: 'Conclusao do presidente'},
+                    { tempo:  3, nome: 'An&uacute;ncios'},
+                ],
+                FimDeSemana: [
+                    { tempo:105, nome: 'Tempo total da reuni&atilde;o'},
+                    { tempo: 30, nome: 'Discurso p&uacute;blico'},
+                    { tempo: 60, nome: 'Estudo de A Sentinela'},
+                ],
+                Comentarios: [
+                    { tempo:  8, nome: 'Tempo total da parte'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 1'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 2'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 3'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 4'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 5'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 6'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 7'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 8'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 9'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 10'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 11'},
+                    { tempo:  0, nome: 'Coment&aacute;rio 12'},
+                ]
+            };
+
+            this.Extra = {
+                Cronos: this,
+
+                ToString: function(obj) {
+                    clearTimeout(window.ToStringTimeout);
+            
+                    var result;
+                    var ident = arguments.length >= 2 ? arguments[1] : undefined;
+            
+                    if (obj == null) {
+                        result = String(obj);
+                    }
+            
+                    if (!result) {
+                        window.ToStringRecursive = window.ToStringRecursive ? window.ToStringRecursive : [];
+                        if (ToStringRecursive.indexOf(obj) >= 0) {
+                            result = obj ? (typeof(obj) == "string" ? "\"" + obj + "\"" : obj.toString()) : obj;
+                        } else {
+                            ToStringRecursive.push(obj);
+                        }
+                        if (!result) {
+                            switch (typeof obj) {
+                                case "string":
+                                    result = '"' + obj + '"';
+                                    break;
+                                case "function":
+                                    result = obj.name || obj.toString();
+                                    break;
+                                case "object":
+                                    var indent = Array(ident || 1).join('\t'),
+                                        isArray = Array.isArray(obj);
+                                    result = '{[' [+isArray] + Object.keys(obj).map(
+                                        function(key) {
+                                            return '\n\t' + indent + '"' + key + '": ' + Cronos.Extra.ToString(obj[key], (ident || 1) + 1);
+                                        }).join(',') + '\n' + indent + '}]' [+isArray];
+                                    break;
+                                default:
+                                    result = obj.toString();
+                                    break;
+                            }
+                        }
+                    }
+            
+                    window.ToStringTimeout = setTimeout(function() {
+                        delete window.ToStringTimeout;
+                        delete window.ToStringRecursive;
+                    }, 100);
+            
+                    return result;
+                },
+
+                ReplaceAll: function(target, search, replacement) {
+                    return String(target).split(search).join(replacement);
+                },
+
+                ZeroEsquerda: function(num, len) {
+                    var num = String(Array(len + 1).join('0') + num);
+                    num = num.substring(num.length - len, num.length);
+                    return num;
+                },
+
+                FormatarData: function(date, formato) {
+                    if (date === undefined) { date = new Date(); }
+                    if (!(date instanceof Date)) return;
+                    if (formato === undefined) { formato = 'd/M/y h:m:s,z'; }
+
+                    var dia = this.ZeroEsquerda(date.getDate(), 2);
+                    var mes = this.ZeroEsquerda(date.getMonth(), 2);
+                    var ano = this.ZeroEsquerda(date.getFullYear(), 4);
+                    var hora = this.ZeroEsquerda(date.getHours(), 2);
+                    var minuto = this.ZeroEsquerda(date.getMinutes(), 2);
+                    var segundo = this.ZeroEsquerda(date.getSeconds(), 2);
+                    var milisegundo = this.ZeroEsquerda(date.getMilliseconds(), 4);
+                
+                    var data = formato;
+                    data = this.ReplaceAll(data, 'd', dia);
+                    data = this.ReplaceAll(data, 'M', mes);
+                    data = this.ReplaceAll(data, 'a', ano);
+                    data = this.ReplaceAll(data, 'y', ano);
+                    data = this.ReplaceAll(data, 'h', hora);
+                    data = this.ReplaceAll(data, 'm', minuto);
+                    data = this.ReplaceAll(data, 's', segundo);
+                    data = this.ReplaceAll(data, 'z', milisegundo);
+
+                    return data;
+                },
+                
+                FormatarString: function(msg) {
+                    var params = typeof(msg) !== 'string' && isFinite(msg.length) ? msg : arguments;
+
+                    if (params.length === 0) return '';
+                    else {
+                        msg = params[0];
+                        for (var i = 1; i < params.length; i++) {
+                            msg = this.ReplaceAll(msg, '{' + (i - 1) + '}', params[i]);
+                        }
+                        return msg;
+                    }
+                },
+
+                HtmlEncode: function(text) {
+                    return $('<div/>').text(text).html();
+                },
+
+                HtmlDecode: function(text) {
+                    return $('<div/>').html(text).text();
+                },
+
+                CarregarScript: function(src, onLoad) {
+                    var element = document.createElement("SCRIPT");
+                    element.type = 'text/javascript';
+                    element.src = src;
+                    element.onload = onLoad;
+                    document.getElementsByTagName('head')[0].appendChild(element);
+                },
+
+                CarregarStylesheet: function(href, onLoad) {
+                    var element = document.createElement('link');
+                    element.rel  = 'stylesheet';
+                    element.type = 'text/css';
+                    element.href = href;
+                    element.media = 'all';
+                    element.onload = onLoad;
+                    document.getElementsByTagName('head')[0].appendChild(element);
+                },
+
+                CarregarStylesheetCode: function(code) {
+                    var element = document.createElement('style');
+                    element.innerHTML = code;
+                    document.getElementsByTagName('head')[0].appendChild(element);
+                }
+            }
+
+            this.Carregar = {
+                JQuery: function(fAposCarregar) {
+                    if (window.jQuery) {
+                        Cronos.Util.Log('jQuery j&aacute; carregado {0}', jQuery.fn.jquery);
+                        if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                    }
+                    else {
+                        Cronos.Extra.CarregarScript('plugins/jQuery/jquery-3.3.1.min.js',
+                            function() {
+                                Cronos.Util.Log('Carregado jQuery {0}', jQuery.fn.jquery);
+                                if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                            }
+                        );
+                    }
+                },
+
+                JQueryUI: function(fAposCarregar) {
+                    if (window.jQuery.ui) {
+                        Cronos.Util.Log('jQuery UI j&aacute; carregado.');
+                        if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                    }
+                    else {
+                        Cronos.Extra.CarregarStylesheet('plugins/jQueryUI/jquery-ui.min.css',
+                            function() {
+                                Cronos.Extra.CarregarScript('plugins/jQueryUI/jquery-ui.min.js',
+                                    function() {
+                                        Cronos.Extra.CarregarScript('plugins/jQueryUITouch/jquery.ui.touch-punch.min.js',
+                                            function() {
+                                                Cronos.Util.Log('Carregado jQuery UI.');
+                                                if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                                            });
+                                    });
+                            });
+                    }
+                },
+
+                JQueryConfirmPlugin: function(fAposCarregar) {
+                    if (window.jQuery.alert) {
+                        Cronos.Util.Log('jQuery Confirm Plugin j&aacute; carregado.');
+                        if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                    }
+                    else {
+                        Cronos.Extra.CarregarStylesheet('plugins/jQueryConfirm/jquery-confirm.min.css',
+                            function() {
+                                Cronos.Extra.CarregarScript('plugins/jQueryConfirm/jquery-confirm.min.js',
+                                function() {
+                                    Cronos.Util.Log('Carregado jQuery Confirm Plugin.');
+                                    if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                                });
+                            }
+                        );
+                    }
+                },
+
+                JQueryToastPlugin: function(fAposCarregar) {
+                    if (window.jQuery.toast) {
+                        Cronos.Util.Log('jQuery Toast Plugin j&aacute; carregado.');
+                        if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                    }
+                    else {
+                        Cronos.Extra.CarregarStylesheet('plugins/jQueryToast/jquery.toast.min.css',
+                            function() {
+                                Cronos.Extra.CarregarScript('plugins/jQueryToast/jquery.toast.min.js',
+                                function() {
+                                    Cronos.Util.Log('Carregado jQuery Toast Plugin.');
+                                    if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                                });
+                            }
+                        );
+                    }
+                },
+
+                FontAwesome: function(fAposCarregar) {
+                    Cronos.Extra.CarregarStylesheet('plugins/FontAwesome/css/font-awesome.min.css',
+                        function() {
+                            Cronos.Util.Log('Carregado Font Awesome Plugin.');
+                            if (typeof(fAposCarregar) === 'function') fAposCarregar();
+                        }
+                    );
+                },
+            }
+            
+            this.Util = {
+                Cronos: this,
+
+                Toast: function(toast) {
+                    if (toast.debug && !Cronos.Definicoes.ModoDebug) return;
+
+                    var intervaloEntreExibicoes = 1000;
+
+                    Cronos.Definicoes.MensagensToast = Array.isArray(Cronos.Definicoes.MensagensToast) ? Cronos.Definicoes.MensagensToast : [];
+                    Cronos.Definicoes.MensagensToast.push(toast);
+                    
+                    var fToast = function(exibir) { 
+                        if (!exibir || !jQuery.toast || !Cronos.Definicoes.ParametrosInicializados) {
+                            if (!Cronos.Definicoes.IdIntervalToast) {
+                                Cronos.Definicoes.IdIntervalToast = setInterval(function() { fToast(true); }, intervaloEntreExibicoes);
+                                fToast(true);
+                            }
+                        }
+                        else {
+                            var toast_ = Cronos.Definicoes.MensagensToast.shift();
+                            if (toast_) {
+                                if (!toast_.debug || Cronos.Definicoes.ModoDebug) {
+                                    jQuery.toast($.extend({
+                                        loader: false,
+                                        hideAfter: intervaloEntreExibicoes * 5,
+                                        position : 'bottom-left'
+                                    }, toast_));
+                                }
+                            }
+                            if (!Cronos.Definicoes.MensagensToast.length) {
+                                setTimeout(function() {
+                                    clearInterval(Cronos.Definicoes.IdIntervalToast);
+                                    Cronos.Definicoes.IdIntervalToast = 0;
+                                }, intervaloEntreExibicoes);
+                            }
+                        }
+                    }                    
+
+                    fToast();            
+                },
+                
+                Log: function(msg) {
+                    Cronos.Util.Toast({
+                        heading: 'Log ' + Cronos.Extra.FormatarData(),
+                        text: Cronos.Extra.FormatarString(arguments),
+                        debug: true
+                    });
+                },
+                
+                Erro: function(msg) {
+                    Cronos.Util.Toast({
+                        text: Cronos.Extra.FormatarString(arguments),
+                        icon: 'error'
+                    });
+                },
+                
+                Info: function(msg) {
+                    Cronos.Util.Toast({
+                        heading: '',
+                        text: Cronos.Extra.FormatarString(arguments),
+                        icon: 'info'
+                    });
+                },
+                
+                Ajuda: function(msg) {
+                    Cronos.Definicoes.Ajuda = Cronos.Definicoes.Ajuda ? Cronos.Definicoes.Ajuda : [];
+
+                    if (Cronos.Definicoes.Ajuda.indexOf(msg) < 0) {
+                        Cronos.Definicoes.Ajuda.push(msg);
+                        Cronos.Util.Toast({
+                            heading: 'Dica de ajuda',
+                            text: Cronos.Extra.FormatarString(arguments),
+                            bgColor : '#326D3C',
+                            icon: 'info'
+                        });
+                    }
+                },
+            };
+            
+            this.Nucleo = { 
+                Cronos: this,
+
+                CarregarParametrosIniciais: function() {
+                    Cronos.Definicoes = $.extend(Cronos.Definicoes, params, { ParametrosInicializados: true });
+                },
+
+                Carregando: function(modo) {
+                    if (modo) {
+                        $('body').removeClass('carregado');
+                    }
+                    else if (arguments.length) {
+                        $('body').addClass('carregado');
+                    }
+                    return !$('body').hasClass('carregado');
+                },
+
+                ConfigurarControles: function() {
+                    Cronos.Objetos.Conteudo = $('body > .conteudo');
+
+                    Cronos.Objetos.Reuniao = Cronos.Objetos.Conteudo.find('.reuniao select').selectmenu();
+                    Cronos.Objetos.Reuniao.on('selectmenuselect', function() {
+                        var this_ = this;
+                        var value = Cronos.Objetos.Reuniao.val();
+                        var text = Cronos.Objetos.Reuniao.find('option:selected').text().toLowerCase();
+                        var fAlterar = function() {
+                            Cronos.Definicoes.ReuniaoSelecionada = value;
+                            Cronos.Cronometros.Lista = {};
+                            Cronos.Objetos.Partes.html('');
+                            var partes = Cronos.Partes[$(this_).val()];
+                            for (var i = 0; i < partes.length; i++) {
+                                Cronos.Objetos.AdicionarParte.click();
+                                var jParte = $('.parte:last');
+                                jParte.find('.nome input').val(Cronos.Extra.HtmlDecode(partes[i].nome));
+                                jParte.find('.tempo .slider').slider('value', partes[i].tempo).trigger('slidechange');
+                            }                            
+                            Cronos.Util.Info(text ? 'Carregado cron&ocirc;metros para {0}' : 'Todos os cron&ocirc;metros foram removidos.', text);
+                            Cronos.Definicoes.Alteracoes = false;
+                        };
+                        if (!Cronos.Definicoes.Alteracoes) {
+                            fAlterar();
+                        }
+                        else if (!Cronos.Definicoes.AlteracoesIgnorar) {
+                            $.confirm({
+                                title: 'Carregar cron&ocirc;metros',
+                                content: Cronos.Extra.FormatarString('Descartar os cron&ocirc;metros atuais e quaisquer altera&ccedil;&otilde;es para carregar a lista padr&atilde;o para {0}?', text),
+                                escapeKey: 'Cancelar',
+                                buttons: {
+                                    Sim: fAlterar,
+                                    Cancelar: function() { 
+                                        if (Cronos.Definicoes.ReuniaoSelecionada) {
+                                            Cronos.Definicoes.AlteracoesIgnorar = true;
+                                            Cronos.Objetos.Reuniao.val(Cronos.Definicoes.ReuniaoSelecionada).selectmenu('refresh');
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            Cronos.Definicoes.AlteracoesIgnorar = false;
+                        }
+                    });
+
+                    Cronos.Objetos.Partes = $('.partes');
+                    
+                    var htmlParte = Cronos.Objetos.Partes.html();
+                    Cronos.Objetos.Partes.html('');
+
+                    var fAdicionarParte = function(obj) {
+                        var id = btoa(Date.parse(new Date()) + Cronos.Definicoes.Unico++).replace(/\W/g, '');
+                        var html = htmlParte.replace('{id}', id).replace('{nome-parte}', 'Nome da parte aqui...');
+
+                        if (!obj) {
+                            Cronos.Objetos.Partes.append(html);
+                        }
+                        else {
+                            obj.before(html);
+                        }
+                        
+                        var jParte = Cronos.Objetos.Partes.find('.parte:not(.configurado)');
+                        jParte.addClass('configurado');
+
+                        jParte.animate({opacity: 1}, Cronos.Definicoes.DelayAnimation);
+
+                        var fSetTempo = function(tempo) {
+                            var jSlider = jParte.find('.tempo .slider');
+                            var jLabel = jSlider.parent().find('.label');
+                            var mask = jLabel.attr('data-mask');
+                            if (!mask) {
+                                mask = jLabel.html();
+                                jLabel.attr('data-mask', mask);
+                            }
+                            jLabel.html(Cronos.Extra.FormatarString(mask, tempo == Cronos.Definicoes.TempoMaximo ? 'livre' : tempo == 0 ? 30 : tempo, tempo == Cronos.Definicoes.TempoMaximo ? '' : tempo == 0 ? 'segundo' : 'minuto', tempo == 1 || tempo == Cronos.Definicoes.TempoMaximo ? '' : 's'));
+                            if (Cronos.Cronometros.Lista[id]) {
+                                Cronos.Cronometros.Lista[id].Tempo = tempo;
+                            }                            
+                            Cronos.Nucleo.CronometroLoop();
+                            Cronos.Definicoes.Alteracoes = true;
+                        }
+
+                        jParte.find('.tempo .slider')
+                            .slider({
+                                min: 0,
+                                max: Cronos.Definicoes.TempoMaximo,
+                                slide: function(event, ui) {
+                                    fSetTempo(ui.value);
+                                }
+                            })
+                            .on('slidechange', function(event, ui) {
+                                var value = $(this).slider('value');
+                                fSetTempo(value);
+                            })
+                            .slider({ 
+                                value: 5 
+                            });
+
+                        jParte.find('button.fechar').button().on('click', function() {
+                            var parte = jParte.find('.nome input').val();
+                            $.confirm({
+                                title: 'Remover cron&ocirc;metro',
+                                content: Cronos.Extra.FormatarString('Remover este cron&ocirc;metro{0}?', parte ? ', "' + parte + '"' : ''),
+                                escapeKey: 'Cancelar',
+                                buttons: {
+                                    Sim: function() {
+                                        jParte.find('.controles .stop').click();
+                                        jParte.slideToggle(Cronos.Definicoes.DelayAnimation / 2, function() { jParte.remove(); });
+                                        Cronos.Definicoes.Alteracoes = true;
+                                    },
+                                    Cancelar: function() { }
+                                }
+                            });
+                        });
+
+                        jParte.find('button.novo').button().on('click', function() {
+                            fAdicionarParte(jParte);
+                            Cronos.Definicoes.Alteracoes = true;
+                        });
+
+                        jParte.find('.controles .start').button().on('click', function() {
+                            var this_ = this;
+                            if ($(this_).hasClass('bg-blue')) return;
+
+                            var fStart = function() {
+                                $(this_).addClass('bg-blue');
+                                if (!Cronos.Cronometros.Lista[id]) {
+                                    Cronos.Cronometros.Lista[id] = {
+                                        Tempo: parseInt(jParte.find('.tempo .slider').slider('value')),
+                                        Inicio: Date.parse(new Date()),
+                                    };
+                                }
+                                else {
+                                    delete Cronos.Cronometros.Lista[id].Pause;
+                                }
+                                Cronos.Nucleo.CronometroLoop();
+                                Cronos.Definicoes.Alteracoes = true;
+                            }
+
+                            if (Cronos.Cronometros.Lista[id]) {
+                                Cronos.Util.Ajuda('Reiniciar faz a contagem continuar desde o in&iacute;cio, como se n&atilde;o tivesse interrup&ccedil;&otilde;es.');
+                            }
+                            fStart();
+                        });
+
+                        jParte.find('.controles .stop').button().on('click', function(e, ignorarAjuda) {
+                            $(this).parent().find('button').removeClass('bg-blue');
+                            if (Cronos.Cronometros.Lista[id]) {
+                                if (!Cronos.Cronometros.Lista[id].Pause) {
+                                    Cronos.Cronometros.Lista[id].Pause = Date.parse(new Date());
+                                    Cronos.Nucleo.CronometroLoop();
+                                    if (!ignorarAjuda) {
+                                        Cronos.Util.Ajuda('Clique nos tempos registrados para alterar manualmente.');
+                                    }
+                                    Cronos.Definicoes.Alteracoes = true;
+                                    jParte.find('.tempos .val').css({ 'cursor': 'pointer' });
+                                }
+                                else {
+                                    var fStopApagar = function() {
+                                        delete Cronos.Cronometros.Lista[id];
+                                        jParte.find('.tempos .val').css({ 'cursor': 'default' });
+                                        jParte.find('.tempos .inicio .val').html('&mdash;');
+                                        jParte.find('.tempos .fim .val').html('&mdash;');
+                                        jParte.find('.tempos .tempo .val').removeClass('red').removeClass('blue').html('&mdash;');
+                                        Cronos.Definicoes.Alteracoes = true;
+                                    }
+                                    var parte = jParte.find('.nome input').val();
+                                    $.confirm({
+                                        title: 'Reiniciar cron&ocirc;metro',
+                                        content: Cronos.Extra.FormatarString('Parar novamente ir&aacute; descartar as informa&ccedil;&otilde;es atuais para este cron&ocirc;metro{0}. Prosseguir?', parte ? ', "' + parte + '"' : ''),
+                                        escapeKey: 'Cancelar',
+                                        buttons: {
+                                            Sim: fStopApagar,
+                                            Cancelar: function() { }
+                                        }
+                                    });
+                                }                                
+                            }
+                        });
+
+                        jParte.find('.tempos').on('click', function() {
+                            if (!Cronos.Cronometros.Lista[id] || !Cronos.Cronometros.Lista[id].Pause) return;
+                            var valInicio = jParte.find('.inicio .val').text();
+                            var valFim = jParte.find('.fim .val').text();
+                            var valTempo = jParte.find('.tempo .val').text();
+
+                            $.confirm({
+                                title: 'Ajustar hor&aacute;rios',
+                                content: Cronos.Extra.FormatarString('<div class="ajuste tempos">') +
+                                         Cronos.Extra.FormatarString('<label class="inicio">In&iacute;cio: <input type="text" value="{0}" maxlength="8" /></label>', valInicio) +
+                                         Cronos.Extra.FormatarString('<label class="fim">Fim: <input type="text" value="{0}" maxlength="8" /></label>', valFim) +
+                                         Cronos.Extra.FormatarString('<label class="tempo">Tempo: <input type="text" value="{0}" maxlength="8" /></label>', valTempo) +
+                                         Cronos.Extra.FormatarString('<div />'),
+                                escapeKey: 'Cancelar',
+                                buttons: {
+                                    Ajustar: function() {
+                                        var jConteudo = $('.ajuste.tempos', this.$content);
+                                        var jInicio = jConteudo.find('.inicio input');
+                                        var jFim = jConteudo.find('.fim input');
+                                        var jTempo = jConteudo.find('.tempo input');
+
+                                        if (jInicio.hasClass('bg-red') || jFim.hasClass('bg-red') || jTempo.hasClass('bg-red')) {
+                                            Cronos.Util.Erro('O formato da hora est&aacute; errado. Use algo como 19:30:00.');
+                                            return false;
+                                        }
+
+                                        Cronos.Cronometros.Lista[id].Inicio = parseInt(jInicio.attr('data-val'));
+                                        Cronos.Cronometros.Lista[id].Pause = parseInt(jFim.attr('data-val'));
+
+                                        Cronos.Nucleo.CronometroLoop();
+                                    },
+                                    Cancelar: function() { }
+                                },
+                                onContentReady: function() {
+                                    var jConteudo = $('.ajuste.tempos', this.$content);
+                                    var jInicio = jConteudo.find('.inicio input');
+                                    var jFim = jConteudo.find('.fim input');
+                                    var jTempo = jConteudo.find('.tempo input');
+
+                                    var fDestacar = function(jObj) {
+                                        jObj.css({ 'background-color': 'rgb(255, 247, 125)' });
+                                        jObj.animate({ 'background-color': 'rgb(255, 255, 255)' }, Cronos.Definicoes.DelayAnimation);
+                                    };
+
+                                    var ultimasDefinicoes = [];
+
+                                    var fCalcular = function() {
+                                        if (jInicio.hasClass('bg-red') || jFim.hasClass('bg-red') || jTempo.hasClass('bg-red')) return;
+
+                                        if (ultimasDefinicoes.indexOf('inicio') < 0) {
+                                            var dFim = parseInt(jFim.attr('data-val'));
+                                            var dTempo = parseInt(jTempo.attr('data-val'));
+
+                                            var dInicio = new Date(dFim);
+                                            dInicio.setMilliseconds(dInicio.getMilliseconds() + dTempo);
+                                            jInicio.attr('data-val', Date.parse(dInicio));
+                                            jInicio.val(Cronos.Extra.FormatarData(dInicio, 'h:m:s'));
+                                            fDestacar(jInicio);
+                                        }
+                                        else if (ultimasDefinicoes.indexOf('fim') < 0) {
+                                            var dInicio = parseInt(jInicio.attr('data-val'));
+                                            var dTempo = parseInt(jTempo.attr('data-val'));
+
+                                            var dFim = new Date(dInicio);
+                                            dFim.setMilliseconds(dFim.getMilliseconds() + dTempo);
+                                            jFim.attr('data-val', Date.parse(dFim));
+                                            jFim.val(Cronos.Extra.FormatarData(dFim, 'h:m:s'));
+                                            fDestacar(jFim);
+                                        }
+                                        else if (ultimasDefinicoes.indexOf('tempo') < 0) {
+                                            var dInicio = parseInt(jInicio.attr('data-val'));
+                                            var dFim = parseInt(jFim.attr('data-val'));
+
+                                            var dTempo = dFim - dInicio;
+                                            jTempo.attr('data-val', dTempo);
+                                            jTempo.val(Cronos.Extra.FormatarData(new Date(0, 0, 0, 0, 0, 0, dTempo), 'h:m:s'));
+                                            fDestacar(jTempo);
+                                        }
+                                    };
+
+                                    var fChange = function(e, ignorarCalculo) {
+                                        var fInput = $(this);
+                                        var campo = fInput.closest('label').attr('class');
+
+                                        if (!fInput.val()) {
+                                            fInput.val(Cronos.Extra.FormatarData(new Date(parseInt(fInput.attr('data-val'))), 'h:m:s'));
+                                            fInput.removeClass('bg-red');
+                                        }
+                                        else if (fInput.val().replace(/^([0-9]{1,2}:|)([0-9]{1,2}:|)[0-9]{1,2}$/g, '')) {
+                                            fInput.addClass('bg-red');
+                                        }
+                                        else {
+                                            var value = fInput.val();
+                                            if (value.indexOf(':') < 0 && campo == 'tempo') {
+                                                value = '00:' + value + ':00';
+                                            }
+                                            else if (value.indexOf(':', value.indexOf(':') + 1) < 0) {
+                                                value = campo == 'tempo' ? '00:' + value : value + ':00';
+                                            }
+
+                                            var hora = parseInt(value.split(':')[0]);
+                                            var minuto = parseInt(value.split(':')[1]);
+                                            var segundo = parseInt(value.split(':')[2]);
+
+                                            if (isNaN(hora) || isNaN(minuto) || isNaN(segundo) || hora >= 24 || minuto >= 60 || segundo >= 60) {
+                                                fInput.addClass('bg-red');
+                                            }
+                                            else {
+                                                fInput.removeClass('bg-red');
+
+                                                value = Cronos.Extra.ZeroEsquerda(hora, 2) + ':' + Cronos.Extra.ZeroEsquerda(minuto, 2) + ':' + Cronos.Extra.ZeroEsquerda(segundo, 2);
+                                                fInput.val(value);
+
+                                                if (ultimasDefinicoes[1] != campo) {
+                                                    ultimasDefinicoes.push(campo);
+                                                    if (ultimasDefinicoes.length > 2) ultimasDefinicoes.shift();
+                                                }
+
+                                                if (campo == 'tempo') {
+                                                    fInput.attr('data-val', (segundo * 1000) + (minuto * 1000 * 60) + (hora * 1000 * 60 * 60));
+                                                }
+                                                else {
+                                                    var data;
+                                                    switch (campo) {
+                                                        case 'inicio': data = new Date(Cronos.Cronometros.Lista[id].Inicio); break;
+                                                        case 'fim': data = new Date(Cronos.Cronometros.Lista[id].Pause); break;
+                                                    }
+                                                    data.setHours(hora);
+                                                    data.setMinutes(minuto);
+                                                    data.setSeconds(segundo);
+                                                    fInput.attr('data-val', Date.parse(data));
+                                                }
+
+                                                if (!ignorarCalculo) {
+                                                    var campoAjuste;
+                                                    if (campo == 'inicio' && Date.parse(data) > parseInt(jFim.attr('data-val'))) campoAjuste = jFim;
+                                                    if (campo == 'fim' && Date.parse(data) < parseInt(jInicio.attr('data-val'))) campoAjuste = jInicio;
+                                                    if (campoAjuste) {
+                                                        campoAjuste.attr('data-val', Date.parse(data));
+                                                        campoAjuste.val(Cronos.Extra.FormatarData(data, 'h:m:s'));
+                                                        fDestacar(campoAjuste);
+                                                    }
+
+                                                    fCalcular();
+                                                }
+                                            }
+                                        }
+                                    };
+
+                                    jTempo.attr('data-val', Cronos.Cronometros.Lista[id].Pause - Cronos.Cronometros.Lista[id].Inicio).on('change', fChange).trigger('change', true);
+                                    jFim.attr('data-val', Cronos.Cronometros.Lista[id].Pause).on('change', fChange).trigger('change', true);
+                                    jInicio.attr('data-val', Cronos.Cronometros.Lista[id].Inicio).on('change', fChange).trigger('change', true);
+                                }
+                            });
+                        });
+
+                        jParte.find('input[type="text"]').on('click', function() { $(this).focus(); });
+                    };
+
+                    Cronos.Objetos.AdicionarParte = Cronos.Objetos.Conteudo.find('.adicionarParte').button();
+                    Cronos.Objetos.AdicionarParte.on('click', function() {
+                        fAdicionarParte();
+                    });
+
+                    Cronos.Objetos.StopTodos = Cronos.Objetos.Conteudo.find('.stopTodos').button();
+                    Cronos.Objetos.StopTodos.on('click', function() {
+                        var count = $('.partes .parte .controles .start.bg-blue').length;
+                        if (!count) {
+                            Cronos.Util.Info('Nenhum cron&ocirc;metro est&aacute; ligado.');
+                        }
+                        else {
+                            $.confirm({
+                                title: 'Parar cron&ocirc;metros',
+                                content: Cronos.Extra.FormatarString('Cron&ocirc;metros ativos: {0}. Parar todos?', count),
+                                escapeKey: 'Cancelar',
+                                buttons: {
+                                    Sim: function() {
+                                        $('.partes .parte').each(function(i, obj) {
+                                            var start = $('.controles .start', obj);
+                                            var stop = $('.controles .stop', obj);
+                                            if (start.hasClass('bg-blue')) stop.trigger('click', true);
+                                        });
+                                        Cronos.Util.Info('Cron&ocirc;metros interrompidos: {0}', count);
+                                    },
+                                    Cancelar: function() { }
+                                }
+                            });
+                        }
+                    });
+
+
+                    Cronos.Objetos.Partes = Cronos.Objetos.Conteudo.find('.partes').sortable({
+                        revert: true,
+                        cancel: "input,.slider,button"
+                    });
+
+                    Cronos.Objetos.Relatorio = $('.relatorio');
+                    Cronos.Objetos.RelatorioTexto = $('.relatorio textarea');
+                    Cronos.Objetos.RelatorioTitulo = $('.relatorio h1');
+                    Cronos.Objetos.RelatorioTitulo.on('click', function() {
+                        if (!Cronos.Objetos.RelatorioTexto.is(":visible")) {
+                            Cronos.Objetos.RelatorioTexto.val(Cronos.Nucleo.Relatorio());
+                        }
+                        Cronos.Objetos.RelatorioTexto.slideToggle(Cronos.Definicoes.DelayAnimation / 2);
+                    })
+                    Cronos.Objetos.RelatorioCopiar = $('.relatorio .copiar').button().on('click', function() {
+                        var vsible = Cronos.Objetos.RelatorioTexto.is(':visible');
+                        if (!vsible) Cronos.Objetos.RelatorioTexto.show();
+                        Cronos.Objetos.RelatorioTexto.val(Cronos.Nucleo.Relatorio());
+                        Cronos.Objetos.RelatorioTexto.select();
+
+                        try {
+                            document.execCommand("copy");
+                            Cronos.Util.Info('Conte&uacute;do copiado (CTRL+C).');
+                            if (window.getSelection) { window.getSelection().removeAllRanges(); }
+                            else if (document.selection) { document.selection.empty(); }
+                        } 
+                        catch (ex) {
+                            Cronos.Util.Erro('N&atilde;o foi poss&iacute;vel copiar o conteudo. Fa&ccedil;a manualmente com CTRL+C');
+                        }
+
+                        if (!vsible) Cronos.Objetos.RelatorioTexto.hide();
+                    });
+
+                    var diaDaSemana = (new Date()).getDay() + 1;
+                    Cronos.Objetos.Reuniao.val(diaDaSemana == 1 || diaDaSemana == 7 ? 'FimDeSemana' : 'MeioDeSemana').selectmenu('refresh').trigger("selectmenuselect");
+                },
+
+                Relatorio: function() {
+                    var relatorio = [];
+                    
+                    var data = new Date();
+                    if (Cronos.Cronometros.Lista) {
+                        for (id in Cronos.Cronometros.Lista) {
+                            data = new Date(Cronos.Cronometros.Lista[id].Inicio);
+                            break;
+                        }
+                    }
+
+                    var reuniao = Cronos.Objetos.Reuniao.find('option:selected').text();
+
+                    if (reuniao) {
+                        relatorio[relatorio.length] = Cronos.Extra.FormatarString('Relat&oacute;rio do tempo das partes');
+                        relatorio[relatorio.length] = Cronos.Extra.FormatarString('{0}', reuniao);
+                    }
+                    else {
+                        relatorio[relatorio.length] = Cronos.Extra.FormatarString('Relat&oacute;rio de tempo');
+                    }
+                    relatorio[relatorio.length] = Cronos.Extra.FormatarString('Data: {0}', Cronos.Extra.FormatarData(data, 'd/M/y'));
+
+                    var partes = $('.partes .parte');
+                    if (partes.length) {
+                        partes.each(function(i, obj) {
+                            var titulo = $('.nome input', obj).val();
+                            var pessoa = $('.pessoa input', obj).val();
+                            var tempoEsperado = $('.tempo .slider', obj).slider('value');
+                            var inicio = $('.tempos .inicio .val', obj).text().replace(Cronos.Extra.HtmlDecode('&mdash;'), '');
+                            var fim = $('.tempos .fim .val', obj).text().replace(Cronos.Extra.HtmlDecode('&mdash;'), '');
+                            var tempo = $('.tempos .tempo .val', obj).text().replace(Cronos.Extra.HtmlDecode('&mdash;'), '');
+                            var atraso = $('.tempos .tempo .val', obj).hasClass('red');
+
+                            relatorio[relatorio.length] = '--------------------';
+                            if (pessoa) {
+                                relatorio[relatorio.length] = Cronos.Extra.FormatarString('{0}', pessoa);
+                            }
+                            relatorio[relatorio.length] = Cronos.Extra.FormatarString('{0} {1}{2}', titulo ? titulo : 'Parte n&atilde;o informada',tempoEsperado == Cronos.Definicoes.TempoMaximo ? '' : '(' + (tempoEsperado == 0 ? 30 : tempoEsperado), tempoEsperado == Cronos.Definicoes.TempoMaximo ? '' : (tempoEsperado == 0 ? ' seg' : ' min') + ')');
+                            relatorio[relatorio.length] = Cronos.Extra.FormatarString('{0}', tempo ? 'Feito em ' + tempo + (atraso ? ' (atrasou)' : '') : 'N&atilde;o cronometrado');
+                            if (inicio && fim) {
+                                relatorio[relatorio.length] = Cronos.Extra.FormatarString('Das {0} &agrave;s {1}', inicio, fim);
+                            }
+                        });
+                    }
+                    else {
+                            relatorio[relatorio.length] = '--------------------';
+                            relatorio[relatorio.length] = Cronos.Extra.FormatarString('Nenhum cron&ocirc;metro listado.');
+                    }
+                    relatorio[relatorio.length] = '';
+                    relatorio[relatorio.length] = 'http://cronos.cabral.br.com/'
+
+                    return Cronos.Extra.HtmlDecode(relatorio.join('\n'));
+                },
+
+                CronometroLoop: function() {
+                    for (id in Cronos.Cronometros.Lista) {
+                        var jInicio = $('#' + id + ' .tempos .inicio .val');
+                        var jFim = $('#' + id + ' .tempos .fim .val');
+                        var jTempo = $('#' + id + ' .tempos .tempo .val');
+
+                        var inicio = Cronos.Cronometros.Lista[id].Inicio;
+                        var fim = Cronos.Cronometros.Lista[id].Pause ? Cronos.Cronometros.Lista[id].Pause : Date.parse(new Date());
+                        var tempo = fim - inicio;
+
+                        jInicio.text(Cronos.Extra.FormatarData(new Date(inicio), 'h:m:s'));
+                        jFim.text(Cronos.Extra.FormatarData(new Date(fim), 'h:m:s'));
+                        jTempo.text(Cronos.Extra.FormatarData(new Date(tempo - 21 * 1000 * 60 * 60), 'h:m:s'));
+
+                        if (Cronos.Cronometros.Lista[id].Tempo != Cronos.Definicoes.TempoMaximo) {
+                            var tempoLimite = Cronos.Cronometros.Lista[id].Tempo * 1000 * 60;
+                            tempoLimite = tempoLimite == 0 ? 30 * 1000 : tempoLimite;
+                            var tempoTolerancia = Cronos.Cronometros.Lista[id].Tempo == 0 ? 0 : Cronos.Definicoes.ToleranciaDeAtrasoEmSegundos * 1000;
+                            if (tempo <= tempoLimite + tempoTolerancia) {
+                                jTempo.removeClass('red');
+                                jTempo.addClass('blue');
+                            }
+                            else {
+                                jTempo.removeClass('blue');
+                                jTempo.addClass('red');
+                            }
+                        }
+                        else {
+                            jTempo.removeClass('red').removeClass('blue');
+                        }
+                    }
+                    if (Cronos.Objetos.RelatorioTexto.is(":visible")) {
+                        Cronos.Objetos.RelatorioTexto.val(Cronos.Nucleo.Relatorio());
+                    }
+                },
+
+                PrevineSaidaDaTela: function() {
+                    window.onbeforeunload = function() {
+                        return 'Sair do aplicativo Cronos?';
+                    };
+                },
+
+                IniciarCronometro: function() {
+                    Cronos.Objetos.IntervalCronometro = setInterval(Cronos.Nucleo.CronometroLoop, 1000);
+                }
+            };
+
+            if (Cronos.Definicoes.InicializacaoAutomatica && (!params || params.InicializacaoAutomatica)) this.Inicializar();
+
+            return this;
+        })();
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-103177101-8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-103177101-8');
+    </script>
+</head>
+<body>
+    <div class="conteudo center">
+        <div class="titulo">
+            <h1><i class="fa fa-clock-o" aria-hidden="true"></i> Cronos</h1>
+            <h2>Controle de tempo nas reuni&otilde;es</h2>
+        </div>
+
+        <div class="reuniao">
+            <select>
+                <option value="Nenhum"></option>
+                <option value="MeioDeSemana">Reuni&atilde;o do meio de semana</option>
+                <option value="FimDeSemana">Reuni&atilde;o do fim de semana</option>
+                <option value="Comentarios">Coment&aacute;rios de 30 segs</option>
+            </select>
+        </div>
+        <div class="partes">
+            <div id="{id}" class="parte" style="opacity: 0;">
+                <table>
+                    <tr>
+                        <td class="nome">
+                            <input type="text" placeholder="{nome-parte}" />
+                        </td>
+                        <td class="manipulacao">
+                            <button class="novo bg-green"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                            <button class="fechar bg-red"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="tempo center">
+                            <div class="label">Tempo: {0} {1}{2}</div>
+                            <div class="slider"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table>
+                                <tr>
+                                    <td class="tempos left">
+                                        <label class="inicio"><span>In&iacute;cio</span><span class="val">&mdash;</span></label>
+                                        <label class="fim"><span>Fim</span><span class="val">&mdash;</span></label>
+                                        <label class="tempo"><span>Tempo</span><span class="val">&mdash;</span></label>
+                                    </td>
+                                    <td class="controles right">
+                                        <button class="start"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                        <button class="stop"><i class="fa fa-stop" aria-hidden="true"></i></button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pessoa" colspan="2">
+                            <input type="text" placeholder="Nome da pessoa" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <button class="adicionarParte"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp; Adicionar cron&ocirc;metro</button>
+        <button class="stopTodos"><i class="fa fa-stop" aria-hidden="true"></i> &nbsp; Parar todos</button>
+        <div class="relatorio">
+            <h1 class="left"><i class="fa fa-bars" aria-hidden="true"></i> Relat&oacute;rio</h1>
+            <button class="copiar"><i class="fa fa-clipboard" aria-hidden="true"></i> Copiar</button>
+            <textarea readonly="readonly"></textarea>
+        </div>
+    </div>
+</body>
+</html>
